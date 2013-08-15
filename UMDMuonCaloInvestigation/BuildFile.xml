@@ -1,0 +1,17 @@
+<use name="L1TriggerDPGUpgrade/L1TMuon"/>
+<use name="L1Trigger/DTTrackFinder"/>
+<use name="FWCore/ServiceRegistry"/>  
+<use name="CommonTools/UtilAlgos"/>
+<use name="TrackingTools/Records"/>
+<use name="TrackingTools/TrajectoryState"/>
+<use name="TrackPropagation/SteppingHelixPropagator"/>
+<use name="Geometry/CommonDetUnit"/>
+<use name="DataFormats/GeometrySurface"/>
+<use name="MagneticField/Engine"/>
+<use name="MagneticField/Records"/>
+<use name="DataFormats/HepMCCandidate"/>
+<use name="CommonTools/Utils"/>
+<use name="roottmva"/>
+<use name="CalibFormats/CaloTPG"/>
+<flags EDM_PLUGIN="1"/>
+
