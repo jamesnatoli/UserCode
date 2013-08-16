@@ -134,8 +134,8 @@ const char* legend[MCGRP] = {
 const int mccolor[MCGRP] = {
   10, // transparent?
   10,
-  10,
-  10,
+  10-1,
+  10-1,
   kAzure-9,
   kAzure-9,
   kGreen+1,
