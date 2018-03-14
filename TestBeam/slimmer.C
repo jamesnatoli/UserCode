@@ -6,6 +6,7 @@
 #include <TString.h>
 #include <vector>
 #include <iostream>
+#include <string.h>
 
 using std::vector;
 
@@ -56,6 +57,13 @@ void slimmer(const char* filename = "") {
   double pulse_adc__N[29][10],ped_adc__N[29];
   double pulse_tdc__N[29][10];
 
+  // JAMES N ADDED TO ADD NAME TO TREE
+  string file = filename;
+  file = file.substr(file.find("00") + 2, 4);
+  TString run = TString(file);
+  int run__N = run.Atoi();
+  cout << run__N << endl;
+
   double slopeX__N, interceptX__N; // new variables: tracking
   double slopeY__N, interceptY__N; // new variables: tracking
 
@@ -64,6 +72,9 @@ void slimmer(const char* filename = "") {
                              ReplaceAll(".root","_slim.root").
                              Data(),"RECREATE");
   TTree* tree = new TTree("slim","slimmed tree");
+
+  // Add a branch to store the run number
+  tree->Branch("run", &run__N,"run/I");
 
   tree->Branch("xA",&xa__N);
   tree->Branch("xB",&xb__N);
