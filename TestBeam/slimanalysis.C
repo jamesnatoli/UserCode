@@ -1,26 +1,6 @@
 #include "slimanalysis.h"
 #include "helper_funcs.c"
 
-// Corrections to get alignment:
-// # Wire chamber means and standard deviations (xA-xC, xA-xC, yA-yC, etc.)
-// wc_res = {}
-// wc_res["x", "BC", "mean"] = -5.83e-01
-// wc_res["y", "BC", "mean"] = -1.75e+01
-// wc_res["x", "AC", "mean"] = -1.24e+00
-// wc_res["y", "AC", "mean"] = -8.78e+00
-// wc_res["x", "BC", "rms" ] =  3.96e+00
-// wc_res["y", "BC", "rms" ] =  3.88e+00
-// wc_res["x", "AC", "rms" ] =  4.30e+00
-// wc_res["y", "AC", "rms" ] =  5.08e+00
-
-// Based on numbers above, I get:
-//     "xA-xB+0.657",
-//     "xB-xC+0.583",
-//     "xC-xA-1.24",
-//     "yA-yB-1.12",
-//     "yB-yC-3.96",
-//     "yC-yA+5.08"
-
 void doAlignmentPlots(const char*
                       dir="~/TB_Analysis_17/DATA/new_SLIM/",
                       bool debug=false) {
@@ -46,7 +26,7 @@ void doAlignmentPlots(const char*
 
   double mean[NPLANES], sigma[NPLANES];
   for (int i = 0; i < NPLANES; ++i) {
-    hist[i] = new TH1F(var[i].c_str(),"",240,-30,30); // creates the 4 histograms, but does this fill it too??                                  
+    hist[i] = new TH1F(var[i].c_str(),"",240,-30,30);
     chain->Project(var[i].c_str(),var[i].c_str(),
                    Form("abs(%s)<30",var[i].c_str()));
     mean[i] = hist[i]->Fit("gaus","SQN")->GetParams()[1];
@@ -122,21 +102,21 @@ void doMaps(const char*
     // and obtain a usable macro
     hist_eff[i] = new TH2F(TString(Form("%s_eff",channels[i].name.c_str())).ReplaceAll("-","_").Data(),
                            "",350,-75,75,350,-75,75);
-    hist_den[i] = new TH2F(Form("%s_den",channels[i].name.c_str()),
+    hist_den[i] = new TH2F(TString(Form("%s_den",channels[i].name.c_str())).ReplaceAll("-","_").Data(),
                            "",350,-75,75,350,-75,75);
     hist_eff[i]->Sumw2();
     hist_den[i]->Sumw2();
 
-    hist_effX[i] = new TH1F(Form("%s_effX",channels[i].name.c_str()),
+    hist_effX[i] = new TH1F(TString(Form("%s_effX",channels[i].name.c_str())).ReplaceAll("-","_").Data(),
                             "",350,-100,100);
-    hist_denX[i] = new TH1F(Form("%s_denX",channels[i].name.c_str()),
+    hist_denX[i] = new TH1F(TString(Form("%s_denX",channels[i].name.c_str())).ReplaceAll("-","_").Data(),
                             "",350,-100,100);
     hist_effX[i]->Sumw2();
     hist_denX[i]->Sumw2();
 
-    hist_effY[i] = new TH1F(Form("%s_effY",channels[i].name.c_str()),
+    hist_effY[i] = new TH1F(TString(Form("%s_effY",channels[i].name.c_str())).ReplaceAll("-","_").Data(),
                             "",400,-100,100);
-    hist_denY[i] = new TH1F(Form("%s_denY",channels[i].name.c_str()),
+    hist_denY[i] = new TH1F(TString(Form("%s_denY",channels[i].name.c_str())).ReplaceAll("-","_").Data(),
                             "",400,-100,100);
     hist_effY[i]->Sumw2();
     hist_denY[i]->Sumw2();
@@ -282,26 +262,28 @@ void doMaps(const char*
 void doEnergyTS(const char*
                 dir="~/TB_Analysis_17/DATA/new_SLIM/",
                 bool debug=false) {
-
-
-  // Identify channels we need to use
-  struct channel {
-    int chan;
-    int ieta;
-    int idepth;
-    string name;
-  };
+  // Make a TFile
+  TFile *energy_hists = new TFile("energy_hists.root", "RECREATE");
+  if (!energy_hists->IsOpen()) {
+    cout << "Something went wrong..." << endl;
+    return;
+  }
 
   // Let us define the histogram and book them
   TH1F *hist_en[NUMCHAN]; // 8 is the number of tiles; channels.size() == 8
   TH1F *hist_ts[NUMCHAN];
+  TH1F *hist_tsF[NUMCHAN];
+
   if (channels.size()!= NUMCHAN) {
     cout << "Argh, something wrong!" << endl;
     return;
   }
+
   for (unsigned int i = 0; i < channels.size(); ++i) {
-    hist_en[i] = new TH1F(Form("en_%s",channels[i].name.c_str()),"",247,edges);
-    hist_ts[i] = new TH1F(Form("ts_%s",channels[i].name.c_str()),"",
+    hist_en[i] = new TH1F(TString(Form("en_%s",channels[i].name.c_str())).ReplaceAll("-","_").Data(),"",247,edges);
+    hist_ts[i] = new TH1F(TString(Form("ts_%s",channels[i].name.c_str())).ReplaceAll("-","_").Data(),"",
+                          10,0.5,10.5);
+    hist_tsF[i] = new TH1F(TString(Form("ts_%s",channels[i].name.c_str())).ReplaceAll("-","_").Data(),"",
                           10,0.5,10.5);
   }
 
@@ -310,12 +292,10 @@ void doEnergyTS(const char*
   chain->Add(Form("%s/*_slim.root",dir));
 
   // Get the branches I need:
-  vector<double> *xa = 0, *xb = 0, *xc = 0, *ya = 0, *yb = 0, *yc = 0;
+  vector<double> *xa = 0, *xc = 0, *ya = 0, *yc = 0;
   chain->SetBranchAddress("xA",&xa);
-  //chain->SetBranchAddress("xb",&xb);
   chain->SetBranchAddress("xC",&xc);
   chain->SetBranchAddress("yA",&ya);
-  //chain->SetBranchAddress("yB",&yb);
   chain->SetBranchAddress("yC",&yc);
 
   double pulse[NCH][NTS], ped[NCH];
@@ -348,30 +328,38 @@ void doEnergyTS(const char*
 
     // loop on the various channels
     for (unsigned int i = 0; i < channels.size(); ++i) {
-
-      if(!isFiducial(i,x_hit,y_hit))
+      // This ensures that the finger tiles are using the correct runs
+      if (run < 3410 && i >= 3 && i <= 6)
         continue;
 
-      // Use TS = 5, 6, 7, 8; remove 4 times the pedestal
-      double energy_ps =
-        pulse[channels[i].chan][5]+
-        pulse[channels[i].chan][6]+
-        pulse[channels[i].chan][7]+
-        pulse[channels[i].chan][8]-
-        4*ped[channels[i].chan];
+      // Use the time slices numbers contained in TIMESLICES
+      // and remove pedestal times # of time slices used 
+      double energy_ps = 0;
+      for (auto ts : TIMESLICES)
+        energy_ps+=pulse[channels[i].chan][ts];
+      energy_ps-=TIMESLICES.size()*ped[channels[i].chan];
+
+      if(!isFiducial(i,x_hit,y_hit)) // THIS IS THE MOST IMPORTANT STEP EVERYTHING ELSE IS FLUFF
+        continue;
 
       hist_en[i]->Fill(energy_ps);
 
-      for (int t=0;t<10;++t)
-        hist_ts[i]->Fill(t+1,
-                         pulse[channels[i].chan][t]-
-                         ped[channels[i].chan]);
-
+      for (int t=0;t<NTS;++t) {
+        if (i < 3 || i == 7) {
+          hist_ts[i]->Fill(t+1,
+                           pulse[channels[i].chan][t]-
+                           ped[channels[i].chan]);
+        }
+        else {
+          hist_tsF[i]->Fill(t+1,
+                            pulse[channels[i].chan][t]-
+                            ped[channels[i].chan]);
+        }
+      }
     } // loop on channels
-
   } // loop on events
 
-  // here I make the plot, after some beautification
+  // Make energy plots
   TCanvas* canv[NUMCHAN];
 
   for (unsigned int i = 0; i < channels.size(); ++i) {
@@ -414,35 +402,80 @@ void doEnergyTS(const char*
   
   TLegend* leg = new TLegend(0.2,0.7,0.4,0.9,"","brNDC");
   leg->SetTextSize(0.05);
+  TLegend* leg_fing = new TLegend(0.2,0.7,0.4,0.9,"","brNDC");
+  leg_fing->SetTextSize(0.05);
+
+  // Let us also get the histogram with max value...
+  int max_index = 0;
+  int max_indexF = 0;
+  float max_value = -99;
+  float max_valueF = -99;
   
   for (unsigned int i = 0; i < channels.size(); ++i) {
-    
-    hist_ts[i]->SetLineWidth(2);
-    hist_ts[i]->SetLineColor(color[i]);
-    hist_ts[i]->SetLineStyle(style[i]);
+    if ((i < 3) || (i == 7)) {
+      hist_ts[i]->SetLineWidth(2);
+      hist_ts[i]->SetLineColor(color[i]);
+      hist_ts[i]->SetLineStyle(style[i]);
 
-    hist_ts[i]->GetXaxis()->SetTitle("Time Slice [25ns]");
-    hist_ts[i]->GetXaxis()->SetNdivisions(10);
-    hist_ts[i]->GetYaxis()->SetTitle("Charge [fC]");
-    hist_ts[i]->GetYaxis()->SetTitleOffset(1.6);
+      hist_ts[i]->GetXaxis()->SetTitle("Time Slice [25ns]");
+      hist_ts[i]->GetXaxis()->SetNdivisions(NTS);
+      hist_ts[i]->GetYaxis()->SetTitle("Charge [fC]");
+      // changed this from 1.6
+      hist_ts[i]->GetYaxis()->SetTitleOffset(3.0);
+      leg->AddEntry(hist_ts[i],entry[i].c_str(),"l");
 
-    leg->AddEntry(hist_ts[i],entry[i].c_str(),"l");
+      if (hist_ts[i]->GetMaximum()>max_value) {
+        max_index = i;
+        max_value = hist_ts[i]->GetMaximum();
+      }
+    }
+    else { // For finger tiles                                                                                                                  
+      hist_tsF[i]->SetLineWidth(2);
+      hist_tsF[i]->SetLineColor(color[i]);
+      hist_tsF[i]->SetLineStyle(style[i]);
+
+      hist_tsF[i]->GetXaxis()->SetTitle("Time Slice [25ns]");
+      hist_tsF[i]->GetXaxis()->SetNdivisions(NTS);
+      hist_tsF[i]->GetYaxis()->SetTitle("Charge [fC]");
+      // changed this from 1.6
+      hist_tsF[i]->GetYaxis()->SetTitleOffset(3.0);
+      leg_fing->AddEntry(hist_tsF[i],entry[i].c_str(),"l");
+
+      if (hist_tsF[i]->GetMaximum()>max_valueF) {
+        max_indexF = i;
+        max_valueF = hist_tsF[i]->GetMaximum();
+      }
+    }
   }
-
-  hist_ts[4]->Draw("hist");
-  hist_ts[1]->Draw("hist,same");
-  hist_ts[2]->Draw("hist,same");
-  hist_ts[3]->Draw("hist,same");
-  hist_ts[0]->Draw("hist,same");
+  hist_ts[max_index]->Draw("hist");
+  for (unsigned int i=0;i<channels.size(); i++) {
+    if ((i < 3) || (i == 7))
+      hist_ts[i]->Draw("hist,same");
+  }
   leg->Draw("same");
-  hist_ts[4]->Draw("axis,same");
+  hist_ts[max_index]->Draw("axis,same");
 
   canv_ts->Print("Time_Slice_Plots/ts.png");
   canv_ts->Print("Time_Slice_Plots/ts.C");
 
+
+  TCanvas* canv_tsF = new TCanvas("ts","",500,500);
+  hist_tsF[max_indexF]->Draw("hist");
+  for (unsigned int i=0;i<channels.size(); i++) {
+    if (i > 2 || i < 7)
+      hist_tsF[i]->Draw("hist,same");
+  }
+
+  leg_fing->Draw("same");
+  hist_tsF[max_indexF]->Draw("axis,same");
+
+  canv_tsF->Print("Time_Slice_Plots/tsF.png");
+  canv_tsF->Print("Time_Slice_Plots/tsF.C");
+  energy_hists->Close();
 }
 
-
+// THIS IS NOT NEEDED
+/*
 // delta-t w.r.t. SCSN-81
 void doTime(const char*
             dir="/data/users/abelloni/CERN_TB_Aug15_slim_ntuples",
@@ -461,8 +494,9 @@ void doTime(const char*
 
   // Now we get the data
   TChain* chain = new TChain("slim");
-  chain->Add(Form("%s/*_slim.root",dir));
-
+*/
+  //chain->Add(Form("%s/*_slim.root",dir));
+/*
   // Get the branches I need:
   vector<double> *xa = 0,*xb = 0,*xc = 0,*ya = 0,*yb = 0,*yc = 0;
   chain->SetBranchAddress("xA",&xa);
@@ -575,7 +609,6 @@ void doTime(const char*
 
 }
 
-/*
 bool isFiducial(int i, float x_hit, float y_hit) {
 
   // Find if it is fiducial!
