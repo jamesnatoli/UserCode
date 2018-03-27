@@ -263,7 +263,7 @@ void doMaps(bool debug, const char* dir) {
       hist_eff[i]->GetXaxis()->SetTitle("x [mm]");
       hist_eff[i]->GetYaxis()->SetTitle("y [mm]");
       
-      canv[i] = new TCanvas(channels[i].name.c_str(),"",550,500);
+      canv[i] = new TCanvas(TString(channels[i].name.c_str()).ReplaceAll("-","_").Data(), "", 550, 500);
       canv[i]->SetRightMargin(canv[i]->GetLeftMargin());
       hist_eff[i]->Draw("colz");
       // Draw Lines
@@ -296,7 +296,7 @@ void doMaps(bool debug, const char* dir) {
       hist_eff_rot[i] -> GetXaxis() -> SetTitle("x [mm]");
       hist_eff_rot[i] -> GetYaxis() -> SetTitle("y [mm]");
       
-      canv_rot[i] = new TCanvas( (channels[i].name + "_rot").c_str(), "", 550, 500);
+      canv_rot[i] = new TCanvas( TString((channels[i].name + "_rot").c_str()).ReplaceAll("-","_").Data(), "", 550, 500);
       canv_rot[i] -> SetRightMargin(canv[i] -> GetLeftMargin());
       hist_eff_rot[i] -> Draw("colz");
       fid_line_rot -> DrawLine( rot_fiducialX[i][0], rot_fiducialY[i][0],
@@ -324,7 +324,7 @@ void doMaps(bool debug, const char* dir) {
       hist_effX[i]->GetXaxis()->SetTitle("x [mm]");
       hist_effX[i]->GetYaxis()->SetTitle("Efficiency");
       
-      canvX[i] = new TCanvas(Form("effX_%s", channels[i].name.c_str()),
+      canvX[i] = new TCanvas(TString(Form("effX_%s", channels[i].name.c_str())).ReplaceAll("-","_").Data(),
 			     "", 500, 500);
       hist_effX[i]->Draw();
       
@@ -343,7 +343,7 @@ void doMaps(bool debug, const char* dir) {
       hist_effX_rot[i]->GetXaxis()->SetTitle("x [mm]");
       hist_effX_rot[i]->GetYaxis()->SetTitle("Efficiency");
       
-      canvX_rot[i] = new TCanvas(Form("effX_%s", (channels[i].name + "_rot").c_str()),
+      canvX_rot[i] = new TCanvas(TString(Form("effX_%s", (channels[i].name + "_rot").c_str())).ReplaceAll("-","_").Data(),
 			     "", 500, 500);
       hist_effX_rot[i]->Draw();
       
@@ -362,7 +362,7 @@ void doMaps(bool debug, const char* dir) {
       hist_effY[i]->GetXaxis()->SetTitle("y [mm]");
       hist_effY[i]->GetYaxis()->SetTitle("Efficiency");
       
-      canvY[i] = new TCanvas(Form("effY_%s",channels[i].name.c_str()),
+      canvY[i] = new TCanvas(TString(Form("effY_%s",channels[i].name.c_str())).ReplaceAll("-","_").Data(),
 			     "",500,500);
       hist_effY[i]->Draw();
       
@@ -381,7 +381,7 @@ void doMaps(bool debug, const char* dir) {
       hist_effY_rot[i]->GetXaxis()->SetTitle("y [mm]");
       hist_effY_rot[i]->GetYaxis()->SetTitle("Efficiency");
       
-      canvY_rot[i] = new TCanvas(Form("effY_%s", (channels[i].name + "_rot").c_str()),
+      canvY_rot[i] = new TCanvas(TString(Form("effY_%s", (channels[i].name + "_rot").c_str())).ReplaceAll("-","_").Data(),
 			     "",500,500);
       hist_effY_rot[i]->Draw();
       
@@ -507,7 +507,7 @@ void doEnergyTS(bool debug, const char* dir) {
     hist_en[i]->SetLineWidth(2);
     hist_en[i]->SetLineColor(color[i]);
 
-    canv[i] = new TCanvas(channels[i].name.c_str(),"",500,500);
+    canv[i] = new TCanvas(TString(channels[i].name.c_str()).ReplaceAll("-","_").Data(), "", 500, 500);
     canv[i]->SetLogx();
     canv[i]->SetLogy();
     hist_en[i]->Draw("colz");
