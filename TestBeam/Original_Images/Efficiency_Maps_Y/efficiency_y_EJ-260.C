@@ -1,22 +1,22 @@
 void efficiency_y_EJ-260()
 {
-//=========Macro generated from canvas: effY_EJ-260/
-//=========  (Tue Mar 27 12:24:45 2018) by ROOT version6.06/01
-   TCanvas *effY_EJ-260 = new TCanvas("effY_EJ-260", "",80,103,500,500);
+//=========Macro generated from canvas: effY_EJ_260/
+//=========  (Tue Mar 27 14:06:21 2018) by ROOT version6.06/01
+   TCanvas *effY_EJ_260 = new TCanvas("effY_EJ_260", "",80,103,500,500);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(0);
-   effY_EJ-260->Range(-140.5063,-0.1947926,112.6582,1.022661);
-   effY_EJ-260->SetFillColor(0);
-   effY_EJ-260->SetBorderMode(0);
-   effY_EJ-260->SetBorderSize(2);
-   effY_EJ-260->SetTickx(1);
-   effY_EJ-260->SetTicky(1);
-   effY_EJ-260->SetLeftMargin(0.16);
-   effY_EJ-260->SetRightMargin(0.05);
-   effY_EJ-260->SetTopMargin(0.05);
-   effY_EJ-260->SetBottomMargin(0.16);
-   effY_EJ-260->SetFrameBorderMode(0);
-   effY_EJ-260->SetFrameBorderMode(0);
+   effY_EJ_260->Range(-140.5063,-0.1947926,112.6582,1.022661);
+   effY_EJ_260->SetFillColor(0);
+   effY_EJ_260->SetBorderMode(0);
+   effY_EJ_260->SetBorderSize(2);
+   effY_EJ_260->SetTickx(1);
+   effY_EJ_260->SetTicky(1);
+   effY_EJ_260->SetLeftMargin(0.16);
+   effY_EJ_260->SetRightMargin(0.05);
+   effY_EJ_260->SetTopMargin(0.05);
+   effY_EJ_260->SetBottomMargin(0.16);
+   effY_EJ_260->SetFrameBorderMode(0);
+   effY_EJ_260->SetFrameBorderMode(0);
    
    TH1F *EJ_260_effY__3 = new TH1F("EJ_260_effY__3","",400,-100,100);
    EJ_260_effY__3->SetBinContent(0,0.4033845);
@@ -851,7 +851,7 @@ tex->SetNDC();
    tex->SetTextFont(82);
    tex->SetLineWidth(2);
    tex->Draw();
-   effY_EJ-260->Modified();
-   effY_EJ-260->cd();
-   effY_EJ-260->SetSelected(effY_EJ-260);
+   effY_EJ_260->Modified();
+   effY_EJ_260->cd();
+   effY_EJ_260->SetSelected(effY_EJ_260);
 }

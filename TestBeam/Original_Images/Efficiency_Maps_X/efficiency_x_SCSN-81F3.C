@@ -1,22 +1,22 @@
 void efficiency_x_SCSN-81F3()
 {
-//=========Macro generated from canvas: effX_SCSN-81F3/
-//=========  (Tue Mar 27 12:25:06 2018) by ROOT version6.06/01
-   TCanvas *effX_SCSN-81F3 = new TCanvas("effX_SCSN-81F3", "",0,23,500,500);
+//=========Macro generated from canvas: effX_SCSN_81F3/
+//=========  (Tue Mar 27 14:06:49 2018) by ROOT version6.06/01
+   TCanvas *effX_SCSN_81F3 = new TCanvas("effX_SCSN_81F3", "",0,23,500,500);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(0);
-   effX_SCSN-81F3->Range(-140.5063,-0.1996504,112.6582,1.048165);
-   effX_SCSN-81F3->SetFillColor(0);
-   effX_SCSN-81F3->SetBorderMode(0);
-   effX_SCSN-81F3->SetBorderSize(2);
-   effX_SCSN-81F3->SetTickx(1);
-   effX_SCSN-81F3->SetTicky(1);
-   effX_SCSN-81F3->SetLeftMargin(0.16);
-   effX_SCSN-81F3->SetRightMargin(0.05);
-   effX_SCSN-81F3->SetTopMargin(0.05);
-   effX_SCSN-81F3->SetBottomMargin(0.16);
-   effX_SCSN-81F3->SetFrameBorderMode(0);
-   effX_SCSN-81F3->SetFrameBorderMode(0);
+   effX_SCSN_81F3->Range(-140.5063,-0.1996504,112.6582,1.048165);
+   effX_SCSN_81F3->SetFillColor(0);
+   effX_SCSN_81F3->SetBorderMode(0);
+   effX_SCSN_81F3->SetBorderSize(2);
+   effX_SCSN_81F3->SetTickx(1);
+   effX_SCSN_81F3->SetTicky(1);
+   effX_SCSN_81F3->SetLeftMargin(0.16);
+   effX_SCSN_81F3->SetRightMargin(0.05);
+   effX_SCSN_81F3->SetTopMargin(0.05);
+   effX_SCSN_81F3->SetBottomMargin(0.16);
+   effX_SCSN_81F3->SetFrameBorderMode(0);
+   effX_SCSN_81F3->SetFrameBorderMode(0);
    
    TH1F *SCSN_81F3_effX__21 = new TH1F("SCSN_81F3_effX__21","",350,-100,100);
    SCSN_81F3_effX__21->SetBinContent(0,0.1060038);
@@ -697,7 +697,7 @@ tex->SetNDC();
    tex->SetTextFont(82);
    tex->SetLineWidth(2);
    tex->Draw();
-   effX_SCSN-81F3->Modified();
-   effX_SCSN-81F3->cd();
-   effX_SCSN-81F3->SetSelected(effX_SCSN-81F3);
+   effX_SCSN_81F3->Modified();
+   effX_SCSN_81F3->cd();
+   effX_SCSN_81F3->SetSelected(effX_SCSN_81F3);
 }
