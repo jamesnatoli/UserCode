@@ -43,9 +43,9 @@ const vector<int> TIMESLICES {5, 6, 7, 8, 9};
 // Fiducial region: for each tile, 4 points are needed (8 numbers)
 // TB: top, bottom; LR: left, right
 // x,y BL; x,y BR; x,y TL; x,y TR
-const float fiducialX[NUMCHAN][4] = {
-  {-33,  30, -46,  17}, // EJ-260
-  {-25,  35, -40,  28}, // EJ-260 2P
+float fiducialX[NUMCHAN][4] = {
+  {-33,  32, -46,  16}, // EJ-260 CHECKED (TR)
+  {-26,  31, -43,  31}, // EJ-260 2P (TL)
   {-30,  35, -37,  30}, // EJ-200 
   // {-10,10,-10,10},   // Scint-X #signma
   // {  7,18,-6,  5},   // Scint-X finger
@@ -53,36 +53,23 @@ const float fiducialX[NUMCHAN][4] = {
   {-16,  -4, -27, -15}, // SCSN-81 finger 2
   {  0,  13, -11,   2}, // SCSN-81 finger 3
   { 17,  30,   5,  18}, // SCSN-81 finger 4
-  {-38,  32, -45,  22}  // SCSN-81 #sigma
-
-  // old numbers
-  /*{-42,35,-37,38},
-  {-37,40,-37,40},
-  {-50,29,-49,30},
-  {-50,28,-50,28},
-  {-52,27,-51,28} */
+  {-38,  34, -49,  22}  // SCSN-81 #sigma
 };
-const float fiducialY[NUMCHAN][4] = {
-  {-52,-38,15,29}, // EJ_260
-  {-52,-40,25,41}, // EJ-260 2P
-  {-47,-39,34,42}, // EJ-200
+
+float fiducialY[NUMCHAN][4] = {
+  {-52, -43, 15, 29}, // EJ_260 CHECKED (TR)
+  {-54, -39, 27, 42}, // EJ-260 2P (TL)
+  {-47, -39, 34, 42}, // EJ-200
   // {-10,-10,10,10}, // Scint-X #signma
   // {-42,-41,20,22}, // Scint-X finger
-  {-50,-48,23,25}, // SCSN-81 finger 1
-  {-50,-48,25,27}, // SCSN-81 finger 2
-  {-50,-48,28,30}, // SCSN-81 finger 3
-  {-46,-44,30,32}, // SCSN-81 finger 4
-  {-52,-45,20,33}  // SCSN-81 #sigma
-
-  // old numbers
-  /*{-48,-50,25,24},
-  {-45,-45,33,33},
-  {-45,-47,34,32},
-  {-49,-49,32,32},
-  {-41,-42,36,35}*/
+  {-50, -48, 23, 25}, // SCSN-81 finger 1
+  {-50, -48, 25, 27}, // SCSN-81 finger 2
+  {-50, -48, 28, 30}, // SCSN-81 finger 3
+  {-46, -44, 30, 32}, // SCSN-81 finger 4
+  {-52, -46, 23, 34}  // SCSN-81 #sigma
 };
 
-// Identify channels we need to use                                                                                                                         
+// Identify channels we need to use
 struct channel {
   int chan;
   int ieta;
@@ -147,16 +134,19 @@ const int NTS = 10;
 
 float rot_fiducialX[NUMCHAN][4];
 float rot_fiducialY[NUMCHAN][4];
-double thetas[NUMCHAN];
+float thetas[NUMCHAN];
 
 // distance from wire-chamber A to plastic tiles, in [mm]
 const double z_ex = 7300;
 
-// Debug this?
+const char* slim_dir = "~/TB_Analysis_17/DATA/new_SLIM/";
+
 bool isFiducial(int tile, float x, float y);
 void fill_Rot_Array();
 double calc_theta(int channel_num);
 double rotate_Point(double point_X, double point_Y, int channel_num, char xy);
-
+void doAlignmentPlots(bool debug = false, const char* dir = slim_dir);
+void doMaps(bool debug = false, const char* dir = slim_dir);
+void doEnergyTS(bool debug = false, const char* dir = slim_dir);
 
 #endif
