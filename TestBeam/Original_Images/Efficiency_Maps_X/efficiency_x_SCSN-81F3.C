@@ -1,7 +1,7 @@
 void efficiency_x_SCSN-81F3()
 {
 //=========Macro generated from canvas: effX_SCSN_81F3/
-//=========  (Tue Mar 27 14:06:49 2018) by ROOT version6.06/01
+//=========  (Tue Mar 27 19:01:35 2018) by ROOT version6.06/01
    TCanvas *effX_SCSN_81F3 = new TCanvas("effX_SCSN_81F3", "",0,23,500,500);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(0);

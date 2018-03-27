@@ -1,7 +1,7 @@
 void efficiency_y_rotEJ-260()
 {
 //=========Macro generated from canvas: effY_EJ_260/
-//=========  (Tue Mar 27 14:06:21 2018) by ROOT version6.06/01
+//=========  (Tue Mar 27 19:01:14 2018) by ROOT version6.06/01
    TCanvas *effY_EJ_260 = new TCanvas("effY_EJ_260", "",80,103,500,500);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(0);

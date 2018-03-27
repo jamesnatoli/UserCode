@@ -1,7 +1,7 @@
 void efficiency_map_rotSCSN-81F2()
 {
 //=========Macro generated from canvas: SCSN_81F2_rot/
-//=========  (Tue Mar 27 14:06:42 2018) by ROOT version6.06/01
+//=========  (Tue Mar 27 19:01:30 2018) by ROOT version6.06/01
    TCanvas *SCSN_81F2_rot = new TCanvas("SCSN_81F2_rot", "",0,23,550,500);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(0);
